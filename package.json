@@ -1,0 +1,16 @@
+{
+  "name": "comisionesprogramaexcel",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Daniel Carpio",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@sap/hana-client": "^2.27.23",
+    "xlsx": "^0.18.5"
+  }
+}
