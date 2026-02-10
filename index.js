@@ -35,6 +35,7 @@ async function main() {
                 throw Error(`Must be an array, instead of ${typeof validarProgramaConfiguracion}`);
             }
             if (validarProgramaConfiguracion.length > 1) {
+                console.log(validarProgramaConfiguracion);
                 throw Error(`More than 1 value was found`);
             } else {
                 if (validarProgramaConfiguracion.length) {
@@ -110,6 +111,10 @@ function setGlobal() {
     // globalThis.dbSchema = 'PPROY_CORE_QAS'
     // globalThis.dbUsername = 'PPROY_CORE_QAS_B0X7SQX4TSFMZXZPZKQ3VSE7A_RT'
     // globalThis.dbPassword = 'Nc39a0W1gVeSlPHezyVopri08la4I8pagNIyFByaC.hCQXWKetX3l.rYfzVUUHbN_5wS9XTEoktYUbiIOakNj4n_h9XM9NJJAaNxC7P61JGi5ub5SQv3zURjcE_UirIc'
+    // PRD
+    // globalThis.dbSchema = '5AB45EE6F2CF424D8ADA52E876EDC6EB'
+    // globalThis.dbUsername = '5AB45EE6F2CF424D8ADA52E876EDC6EB_6FXS79LW1KGAUM3LYD5KJ0FOX_RT'
+    // globalThis.dbPassword = 'Wv9ox_TgcKCd2be9oIgz7zmUtSit-cl5dZXZFYw23aBNCGMeGG1.nje8PuLWl-e7WCIBCq4dcpdP_6Mohf2FW01ZbIdkO7-aDBdo6a0vmJnTaLg9wRvJRe52QX8-_-IX'
 }
 
 function readExcel() {
@@ -256,7 +261,10 @@ async function actualizaProgramaConfiguracionMarca(oParamCondition, oParam, conn
         // console.log("sql: ", query);
         result = await utilDb.callBatch(conn, query, aItems);
 
-        if (result == 0) {
+        if (result > 1) {
+            console.log("sql: ", query);
+            throw Error(`More than 1 value was updated`)
+        } else if (result == 0) {
             aCampos = [];
             // aItems = [];
             // aItems.push([]);
