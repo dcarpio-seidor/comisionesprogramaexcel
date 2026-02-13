@@ -12,11 +12,11 @@ async function main() {
     const jsonData = readExcel();
     if (jsonData.length) {
         setGlobal();
-        let index = 0;
         let conn = getConnection();
 
-        for (const item of jsonData) {
-            console.log(`${++index}/${jsonData.length}`);
+        for (let index = globalThis.startIndex; index < Math.min(globalThis.endIndex, jsonData.length); index++) {
+            console.log(`${index + 1}/${jsonData.length}`);
+            item = jsonData[index]
             //OBTENER EL ID DE CONFIGURACION
             let oFiltro = {};
             let idConf = '';
@@ -100,6 +100,9 @@ async function main() {
 }
 
 function setGlobal() {
+    globalThis.startIndex = 35000
+    globalThis.endIndex = globalThis.startIndex + 5000
+
     globalThis.dbHost = '573e2afa-fd4a-472e-833d-52bb344eb3ca.hna0.prod-us10.hanacloud.ondemand.com'
     globalThis.dbPort = 443
     globalThis.dbTablePrefix = 'NIUBIZ_CORE_'
@@ -128,7 +131,8 @@ function readExcel() {
         dateNF: 'yyyy-mm-dd'
     });
     // console.log(rows.slice(0, 5));
-    return rows.slice(0, 1000);
+    return rows.slice(globalThis.startIndex, globalThis.endIndex);
+    // return rows;
 }
 
 function getConnection() {
@@ -318,7 +322,11 @@ async function actualizaProgramaConfiguracionMarca(oParamCondition, oParam, conn
                 params.push(data[key]);
             }
             // console.log("batchInsert: ", batchInsert);
-            await utilDb.callBatch(conn, query, [params]);
+            result = await utilDb.callBatch(conn, query, [params]);
+            if (result == 0) {
+                console.log("sql: ", query);
+                throw Error(`No record was inserted`)
+            }
         }
     } catch (e) {
         throw e;
